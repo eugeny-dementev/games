@@ -1,0 +1,6 @@
+[package]
+name = "game_one"
+version = "0.1.0"
+authors = ["Eugeny Dementev <eugeny.dementev@ya.ru>"]
+
+[dependencies]
