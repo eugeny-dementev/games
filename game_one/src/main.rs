@@ -20,12 +20,18 @@ impl App {
         use graphics::*;
 
         const GREEN: [f32; 4] = [0.1, 0.5, 0.1, 1.0];
+        const BLUE:  [f32; 4] = [0.1, 0.1, 0.5, 0.9];
         const RED:   [f32; 4] = [0.5, 0.1, 0.1, 1.0];
 
         let square = rectangle::square(0.0, 0.0, 500.0);
+        let square2 = rectangle::square(0.0, 0.0, 400.0);
+
         let rotation = self.rotation;
-        let (x, y) = (((args.width / 2) as f64) + self.shift,
-                      ((args.height / 2) as f64) + self.shift);
+
+        let (x, y) = (
+            ((args.width / 2) as f64) + self.shift,
+            ((args.height / 2) as f64) + self.shift
+        );
 
         self.shift += 1.0;
 
@@ -37,8 +43,13 @@ impl App {
                                        .rot_rad(rotation)
                                        .trans(-250.0, -250.0);
 
+            let transform2 = c.transform.trans(x, y)
+                                        .rot_rad(-rotation)
+                                        .trans(-250.0, -250.0);
+
             // Draw a box rotating around the middle of the screen.
             rectangle(RED, square, transform, gl);
+            rectangle(BLUE, square2, transform2, gl);
         });
     }
 
