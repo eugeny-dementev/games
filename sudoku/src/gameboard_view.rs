@@ -53,5 +53,56 @@ impl GameBoardView {
         GameBoardView { settings }
     }
 
-    pub fn draw<G: Graphics>(&self, controller: &GameBoardController, c: &Context, g: &mut G) {}
+    pub fn draw<G: Graphics>(&self, controller: &GameBoardController, c: &Context, g: &mut G) {
+        use graphics::{Line, Rectangle};
+
+        let ref settings = self.settings;
+        let board_rect = [
+            settings.position[0],
+            settings.position[1],
+            settings.size,
+            settings.size,
+        ];
+
+        Rectangle::new(settings.background_color).draw(board_rect, &c.draw_state, c.transform, g);
+
+        let cell_edge = Line::new(settings.cell_edge_color, settings.cell_edge_radius);
+        for i in 0..9 {
+            if (i % 3) == 0 {
+                continue;
+            }
+
+            let x = settings.position[0] + i as f64 / 9.0 * settings.size;
+            let y = settings.position[1] + i as f64 / 9.0 * settings.size;
+            let x2 = settings.position[0] + settings.size;
+            let y2 = settings.position[1] + settings.size;
+
+            let vline = [x, settings.position[1], x, y2];
+            cell_edge.draw(vline, &c.draw_state, c.transform, g);
+
+            let hline = [settings.position[0], y, x2, y];
+            cell_edge.draw(hline, &c.draw_state, c.transform, g);
+        }
+
+        let section_edge = Line::new(settings.section_edge_color, settings.section_edge_radius);
+        for i in 1..3 {
+            let x = settings.position[0] + i as f64 / 3.0 * settings.size;
+            let y = settings.position[1] + i as f64 / 3.0 * settings.size;
+            let x2 = settings.position[0] + settings.size;
+            let y2 = settings.position[1] + settings.size;
+
+            let vline = [x, settings.position[1], x, y2];
+            section_edge.draw(vline, &c.draw_state, c.transform, g);
+
+            let hline = [settings.position[0], y, x2, y];
+            section_edge.draw(hline, &c.draw_state, c.transform, g);
+        }
+
+        Rectangle::new_border(settings.board_edge_color, settings.board_edge_radius).draw(
+            board_rect,
+            &c.draw_state,
+            c.transform,
+            g,
+        );
+    }
 }
