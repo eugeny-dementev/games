@@ -10,6 +10,8 @@ pub struct GameBoardViewSettings {
     pub size: f64,
     /// Background color.
     pub background_color: Color,
+    /// Cursor hovered cell color.
+    pub pointed_cell_color: Color,
     /// Border color.
     pub border_color: Color,
     /// Edge color around the whole board.
@@ -33,6 +35,7 @@ impl GameBoardViewSettings {
             position: [10.0; 2],
             size: 400.0,
             background_color: [0.8, 0.8, 1.0, 1.0],
+            pointed_cell_color: [0.65, 0.65, 1.0, 1.0],
             border_color: [0.0, 0.0, 0.2, 1.0],
             board_edge_color: [0.0, 0.0, 0.2, 1.0],
             section_edge_color: [0.0, 0.0, 0.2, 1.0],
@@ -65,6 +68,16 @@ impl GameBoardView {
         ];
 
         Rectangle::new(settings.background_color).draw(board_rect, &c.draw_state, c.transform, g);
+
+        if let Some(pointed_cell) = controller.pointed_cell {
+            let pointed_cell_rect = [
+                settings.position[0] + pointed_cell[0] as f64 / 9.0 * settings.size,
+                settings.position[1] + pointed_cell[1] as f64 / 9.0 * settings.size,
+                44.44,
+                44.44
+            ];
+            Rectangle::new(settings.pointed_cell_color).draw(pointed_cell_rect, &c.draw_state, c.transform, g);
+        }
 
         let cell_edge = Line::new(settings.cell_edge_color, settings.cell_edge_radius);
         for i in 0..9 {
