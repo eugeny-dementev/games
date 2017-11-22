@@ -19,14 +19,14 @@ impl GameBoardController {
         }
     }
 
-    pub fn event<E: GenericEvent>(&mut self, pos: [f64; 2], size: f64, e: &E) {
+    pub fn event<E: GenericEvent>(&mut self, gameboard_view_position: [f64; 2], size: f64, e: &E) {
         use piston::input::{Button, MouseButton};
 
         if let Some(position) = e.mouse_cursor_args() {
             self.cursor_pos = position;
 
-            let x = self.cursor_pos[0] - pos[0];
-            let y = self.cursor_pos[1] - pos[1];
+            let x = self.cursor_pos[0] - gameboard_view_position[0];
+            let y = self.cursor_pos[1] - gameboard_view_position[1];
 
             if x >= 0.0 && x < size && y >= 0.0 && y < size {
                 // Compute the cell position.
